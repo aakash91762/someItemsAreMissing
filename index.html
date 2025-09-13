@@ -1,3 +1,4 @@
+<!-- https://aakash91762.github.io/someItemsAreMissing -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,10 +10,9 @@
   </head>
   <body style="background-color: #eeeeee">
     <style>
-            body {
+      body {
         font-family: "Inter";
         text-align: center;
-
       }
       input {
         height: 2em;
@@ -87,7 +87,6 @@
         background-color: white;
         width: 100%;
         /* font-size: 10%; */
-
       }
       .checkbox-group {
         display: flex;
@@ -99,7 +98,6 @@
         margin: 8px 0;
         display: flex;
         align-items: center;
-
       }
       .checkbox-item input[type="checkbox"] {
         width: auto;
@@ -110,38 +108,37 @@
         margin: 0;
         cursor: pointer;
         flex: 1;
-
       }
-      .free-text{
-    min-height: 2em;
-    padding-top: 10px;
+      .free-text {
+        min-height: 2em;
+        padding-top: 10px;
       }
       .radio-group {
         width: 100%;
-  display: flex;
-  flex-direction: column; /* stack vertically */
-  gap: 8px; /* space between each option */
-  margin: 5px 0;
-  padding: 10px;
-  border: 1px solid #eeeeee;
-  border-radius: 5px;
-  background-color: white;
-  font-size: 12px; /* match form font size */
-}
+        display: flex;
+        flex-direction: column; /* stack vertically */
+        gap: 8px; /* space between each option */
+        margin: 5px 0;
+        padding: 10px;
+        border: 1px solid #eeeeee;
+        border-radius: 5px;
+        background-color: white;
+        font-size: 12px; /* match form font size */
+      }
 
-.radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  font-size: 12px; /* match form font size */
-}
+      .radio-group label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        font-size: 12px; /* match form font size */
+      }
 
-.radio-group input[type="radio"] {
-  width: auto;
-  height: auto;
-  cursor: pointer;
-}
+      .radio-group input[type="radio"] {
+        width: auto;
+        height: auto;
+        cursor: pointer;
+      }
     </style>
 
     <center>
@@ -160,6 +157,18 @@
           />
           <div id="rOrderNumber" class="result"></div>
 
+          <label id="lemail"></label> <br />
+          <input
+            class="input"
+            id="email"
+            type="email"
+            value=""
+            name="email"
+            size="15"
+            required
+          />
+          <div id="remail" class="result"></div>
+
           <label id="lIssue"></label><br />
           <input
             class="input"
@@ -170,6 +179,7 @@
             required
             readonly
           />
+
           <div id="rIssue" class="result"></div>
 
           <label id="lChooseItem"></label><br />
@@ -182,11 +192,14 @@
             <label
               ><input type="radio" name="option" value="1" required /> 1</label
             >
-            <br>
-            <label><input type="radio" name="option" value="2" required/> 2</label>
-            <br>
+            <br />
             <label
-              ><input type="radio" name="option" value="others" required/> Others</label
+              ><input type="radio" name="option" value="2" required /> 2</label
+            >
+            <br />
+            <label
+              ><input type="radio" name="option" value="others" required />
+              Others</label
             >
           </div>
           <div id="rOption" class="result"></div>
@@ -222,6 +235,8 @@
       var items = params.get("items");
       var description = params.get("description");
       var option = params.get("option"); // ✅ fetch radio from URL
+      var email = params.get('email')
+
 
       document
         .getElementById("orderNumber")
@@ -263,6 +278,7 @@
         let d = document.getElementById("description");
         let s = document.getElementById("submit");
         let r = document.getElementById("radioGroup");
+        let e = document.getElementById("email");
 
         o.setAttribute("type", "hidden");
         i.hidden = true;
@@ -270,8 +286,10 @@
         d.hidden = true;
         s.style.visibility = "hidden";
         r.hidden = true;
+        e.hidden = true;
 
         document.getElementById("rOrderNumber").innerHTML = orderNumber;
+        document.getElementById("remail").innerHTML = email;
         document.getElementById("rIssue").innerHTML = issue;
         document.getElementById("rItems").innerHTML = items.replace(/,/g, ", ");
         document.getElementById("rDescription").innerHTML = description;
@@ -283,6 +301,8 @@
         document.getElementById("header").innerHTML =
           "Lengkapi informasi berikut untuk melaporkan masalah.";
         document.getElementById("lOrderNumber").innerHTML = "Nomor Pesanan:";
+        document.getElementById("lemail").placeholder = "Email Aktif";
+        document.getElementById("lemail").innerHTML = "Email Aktif:";
         document.getElementById("lIssue").innerHTML = "Masalah:";
         document.getElementById("lChooseItem").innerHTML =
           "Pilih Barang yang Bermasalah:";
@@ -295,10 +315,13 @@
         document.getElementById("header").innerHTML =
           "Please share the following information to report an issue.";
         document.getElementById("lOrderNumber").innerHTML = "Order Number:";
+        document.getElementById("lemail").innerHTML = "Active Email ID:";
+        document.getElementById("email").placeholder = "Active Email ID";
         document.getElementById("lIssue").innerHTML = "Issue:";
         document.getElementById("lChooseItem").innerHTML =
           "Choose the item with an issue:";
-        document.getElementById("lOption").innerHTML = "How many did you receive?";
+        document.getElementById("lOption").innerHTML =
+          "How many did you receive?";
         document.getElementById("lDescription").innerHTML =
           "Tell us what’s going on:";
         document.getElementById("description").placeholder =
@@ -343,6 +366,8 @@
 
         const urlParams = new URLSearchParams();
         urlParams.set("orderNumber", orderNum);
+        const emailValue = document.getElementById("email").value.trim();
+        urlParams.set("email", emailValue);
         urlParams.set("issue", selectedIssue);
         urlParams.set("items", selectedItems.join(","));
         urlParams.set("description", problemDescription);
@@ -354,6 +379,7 @@
 
         const sendData = {
           orderNumber: orderNum,
+          email: emailValue,
           issue: selectedIssue,
           items: selectedItems,
           description: problemDescription,
@@ -368,6 +394,7 @@
         let data = JSON.stringify(sendData);
 
         document.getElementById("orderNumber").setAttribute("type", "hidden");
+        document.getElementById("email").setAttribute("type", "hidden");
         document.getElementById("issue").hidden = true;
         document.getElementById("itemCheckboxGroup").hidden = true;
         document.getElementById("description").hidden = true;
@@ -376,6 +403,7 @@
 
         document.getElementById("rOrderNumber").innerHTML =
           sendData.orderNumber;
+        document.getElementById("remail").innerHTML = sendData.email;
         document.getElementById("rIssue").innerHTML = sendData.issue;
         document.getElementById("rItems").innerHTML = sendData.items.join(", ");
         document.getElementById("rDescription").innerHTML =
